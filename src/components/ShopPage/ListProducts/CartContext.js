@@ -1,32 +1,50 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useEffect } from "react";
 
-// Tạo Context cho giỏ hàng
 const CartContext = createContext();
 
-// Provider của CartContext
-export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cart')) || []);
-  
-  const addToCart = (product) => {
-    const newCartItems = [...cartItems];
-    const existingItem = newCartItems.find(item => item.product_id === product.product_id);
+const CartProvider = ({ children }) => {
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
 
-    if (existingItem) {
-      existingItem.quantity += 1; // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
-    } else {
-      newCartItems.push({ ...product, quantity: 1 }); // Thêm sản phẩm mới vào giỏ hàng
-    }
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
-    setCartItems(newCartItems);
-    localStorage.setItem('cart', JSON.stringify(newCartItems)); // Lưu giỏ hàng vào localStorage
+  const addToCart = (product, quantity) => {
+    setCart((prevCart) => {
+      const existingProductIndex = prevCart.findIndex(item => item.id === product.id);
+      if (existingProductIndex >= 0) {
+        const updatedCart = [...prevCart];
+        updatedCart[existingProductIndex].quantity += quantity;
+        return updatedCart;
+      } else {
+        return [...prevCart, { ...product, quantity }];
+      }
+    });
+  };
+
+  const removeFromCart = (productId) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+  };
+
+  const updateQuantity = (productId, quantity) => {
+    setCart((prevCart) => {
+      const updatedCart = [...prevCart];
+      const productIndex = updatedCart.findIndex(item => item.id === productId);
+      if (productIndex >= 0) {
+        updatedCart[productIndex].quantity = quantity;
+      }
+      return updatedCart;
+    });
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity }}>
       {children}
     </CartContext.Provider>
   );
 };
 
-// Hook để sử dụng CartContext
-export const useCart = () => useContext(CartContext);
+export { CartContext, CartProvider };

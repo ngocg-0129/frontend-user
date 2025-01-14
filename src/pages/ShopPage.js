@@ -6,12 +6,18 @@ import Feature from "../components/ShopPage/Feature/Feature"
 import Slider from "../components/ShopPage/Slider/Slider"
 import DealsOfTheMonth from "../components/ShopPage/DealsOfTheMonth/DealsOfTheMonth"
 import ListProduct from "../components/ShopPage/ListProducts/index"
+import FloatingCart from "../components/ProductPage/FloatingCart"
+import { CartProvider } from "../components/ShopPage/ListProducts/CartContext";
 
 function ShopPage() {
     return (
         <>
             <Header />
             <ListProduct />
+            <CartProvider>
+                <FloatingCart />
+            </CartProvider>
+            
             <DealsOfTheMonth />
             <Slider />
             <Feature />

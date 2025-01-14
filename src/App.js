@@ -6,7 +6,6 @@ import CheckOutPage from './pages/CheckOutPage';
 import ProductDetail from './components/ShopPage/ListProducts/ProductDetail';
 import ProductList from './components/ShopPage/ListProducts/ProductLists';
 import ProductPage from './pages/ProductPage';
-import { CartProvider } from "./components/ShopPage/ListProducts/CartContext";
 
 
 function App() {
@@ -14,7 +13,6 @@ function App() {
 
   return (
     <>
-    <CartProvider>
     <Router> 
       <Routes> 
         <Route path="/" element={<HomePage />} /> 
@@ -22,9 +20,7 @@ function App() {
         <Route path="/product/:id" element={<ProductPage />} /> 
       </Routes> 
     </Router> 
-    </CartProvider>
     
-     {/* <CheckOutPage /> */}
       </>
   )
 }

@@ -41,7 +41,7 @@ function ProductList({ products, sortOrder, onSortChange }) {
   };
 
   const handleProductClick = (id) => {
-    navigate(`/product/${id}`); // Chuyển hướng đến trang chi tiết sản phẩm
+    navigate(`/product/${id}`); 
   };
 
   const renderPageNumbers = () => {

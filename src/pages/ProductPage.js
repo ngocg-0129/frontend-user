@@ -6,6 +6,9 @@ import Subscribe from "../components/ShopPage/Subscribe/Subscribe"
 import Footer from "../components/ShopPage/Footer/Footer"
 import ProductDetail from "../components/ShopPage/ListProducts/ProductDetail"
 import { useParams } from 'react-router-dom';
+import { CartProvider } from "./../components/ShopPage/ListProducts/CartContext";
+import Cart from "../components/ProductPage/Cart"
+import FloatingCart from "../components/ProductPage/FloatingCart"
 
 function ProductPage() {
 
@@ -14,7 +17,12 @@ function ProductPage() {
     return (
         <>
             <Header />
-            <ProductDetail productId={productId} /> 
+            <CartProvider>
+                <div>
+                <ProductDetail productId={productId} /> 
+                <FloatingCart />
+                </div>
+            </CartProvider>
             <Slider />
             <Feature />
             <DealsOfTheMonth />
